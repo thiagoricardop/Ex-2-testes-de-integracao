@@ -23,3 +23,32 @@ test('Testando cadastro de três perguntas', () => {
   expect(perguntas[2].num_respostas).toBe(0);
   expect(perguntas[1].id_pergunta).toBe(perguntas[2].id_pergunta-1);
 });
+
+
+test('Testando cadastro de respostas', () => {
+  modelo.cadastrar_pergunta('1 + 1 = ?');
+  const pergunta = modelo.listar_perguntas();
+  const id_pergunta = pergunta[0].id_pergunta
+  modelo.cadastrar_resposta(id_pergunta,"2")
+  resposta = modelo.get_respostas(id_pergunta)
+  expect(resposta[0].id_pergunta).toBe(id_pergunta);
+  expect(resposta[0].texto).toBe("2");
+});
+
+test('Testando buscar perguntas por id', () => {
+  modelo.cadastrar_pergunta('1 + 1 = ?');
+  const pergunta = modelo.listar_perguntas();
+  const perguntaRef = modelo.get_pergunta(pergunta[0].id_pergunta)
+  expect(pergunta[0].texto).toBe(perguntaRef.texto);
+  expect(pergunta[0].id_pergunta).toBe(perguntaRef.id_pergunta);
+});
+test('Testando número de respostas', () => {
+  modelo.cadastrar_pergunta('Quais são números ímpares?');
+  const pergunta = modelo.listar_perguntas();
+  const id_pergunta = pergunta[0].id_pergunta
+  modelo.cadastrar_resposta(id_pergunta,"1")
+  modelo.cadastrar_resposta(id_pergunta,"3")
+  modelo.cadastrar_resposta(id_pergunta,"5")
+  num_resposta = modelo.get_num_respostas(id_pergunta)
+  expect(num_resposta).toBe(3);
+});
